@@ -1,0 +1,40 @@
+@model List<Event>
+@{
+    ViewData["Title"] = "Manage events";
+}
+
+<h1 class="event-title">Manage Events</h1>
+
+<partial name="_StatusMessage" />
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add event</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">Back to dashboard</a>
+</p>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Event item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Date</td>
+                <td>@item.Time</td>
+                <td>@item.Location</td>
+                <td class="text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

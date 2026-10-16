@@ -1,0 +1,23 @@
+@model Guest
+@{
+    ViewData["Title"] = "Delete guest";
+}
+
+<h1 class="event-title">Delete Guest</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to remove <strong>@Model.Name</strong> from the guest list? This cannot be undone.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Will attend</dt>
+    <dd class="col-sm-9">@(Model.WillAttend == true ? "Yes" : Model.WillAttend == false ? "No" : "No response yet")</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

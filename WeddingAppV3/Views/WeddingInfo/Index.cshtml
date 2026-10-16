@@ -1,0 +1,39 @@
+@model List<WeddingInfo>
+@{
+    ViewData["Title"] = "Wedding information";
+}
+
+<h1 class="event-title">Wedding Information</h1>
+<p>These text blocks are shown on the home page, in display order.</p>
+
+<partial name="_StatusMessage" />
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add text block</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">Back to dashboard</a>
+</p>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th>Heading</th>
+            <th>Content</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (WeddingInfo info in Model)
+        {
+            <tr>
+                <td>@info.DisplayOrder</td>
+                <td>@info.Heading</td>
+                <td>@info.Content</td>
+                <td class="text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@info.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@info.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

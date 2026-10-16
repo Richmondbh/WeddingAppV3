@@ -1,0 +1,32 @@
+@model Guest
+@{
+    ViewData["Title"] = "Guest details";
+    string attendText = Model.WillAttend == true ? "Yes"
+        : Model.WillAttend == false ? "No" : "No response yet";
+}
+
+<h1 class="event-title">@Model.Name</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Email)</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.PhoneNumber)</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "–" : Model.PhoneNumber)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.WillAttend)</dt>
+    <dd class="col-sm-9">@attendText</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NumberOfAttendants)</dt>
+    <dd class="col-sm-9">@Model.NumberOfAttendants</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Message)</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Message) ? "–" : Model.Message)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RegisteredOn)</dt>
+    <dd class="col-sm-9">@Model.RegisteredOn.ToString("yyyy-MM-dd HH:mm")</dd>
+</dl>
+
+<a asp-action="Rsvp" asp-route-id="@Model.Id" class="btn btn-primary">RSVP</a>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>

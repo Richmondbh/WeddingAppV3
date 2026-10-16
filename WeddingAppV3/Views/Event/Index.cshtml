@@ -1,0 +1,35 @@
+@model List<Event>
+@{
+    ViewData["Title"] = "Event";
+}
+
+<h1 class="event-title text-center">The Wedding Day</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        @if (Model.Count == 0)
+        {
+            <p>The programme will be published soon.</p>
+        }
+
+        @foreach (Event item in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="card-title h4">@item.Title</h2>
+                    <p class="mb-1"><strong>Date:</strong> @item.Date</p>
+                    <p class="mb-1"><strong>Time:</strong> @item.Time</p>
+                    <p class="mb-1"><strong>Location:</strong> @item.Location</p>
+                    @if (!string.IsNullOrEmpty(item.Description))
+                    {
+                        <p class="mb-0 mt-2">@item.Description</p>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="text-center mt-4">
+            <a asp-controller="Guest" asp-action="Create" class="btn btn-primary">Register as a guest</a>
+        </div>
+    </div>
+</div>

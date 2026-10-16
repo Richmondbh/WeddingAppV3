@@ -1,0 +1,51 @@
+@model RsvpViewModel
+@{
+    ViewData["Title"] = "RSVP";
+}
+
+<h1 class="event-title text-center">Respond to the Invitation</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <p>
+            Responding as <strong>@Model.Name</strong> (@Model.Email).
+        </p>
+
+        <form asp-action="Rsvp" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* Hidden fields so the name and email are still shown if the form is redisplayed. *@
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Name" />
+            <input type="hidden" asp-for="Email" />
+
+            <div class="mb-3">
+                <span class="form-label d-block">Will you attend?</span>
+                <div class="form-check">
+                    <input asp-for="WillAttend" type="radio" value="true" id="attendYes" class="form-check-input" />
+                    <label for="attendYes" class="form-check-label">Yes, I will be there</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="WillAttend" type="radio" value="false" id="attendNo" class="form-check-input" />
+                    <label for="attendNo" class="form-check-label">Sorry, I cannot make it</label>
+                </div>
+                <span asp-validation-for="WillAttend" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumberOfAttendants" class="form-label"></label>
+                <input asp-for="NumberOfAttendants" type="number" min="0" max="10" class="form-control" />
+                <span asp-validation-for="NumberOfAttendants" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Message" class="form-label"></label>
+                <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send response</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

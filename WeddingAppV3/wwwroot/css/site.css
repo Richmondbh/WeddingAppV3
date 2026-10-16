@@ -1,31 +1,438 @@
+/* --------------------------------------------------------------------------------
+  The  Wedding website - site styles
+   Palette, typography and layout for the whole application. Bootstrap is
+   loaded first and is overridden here.
+   ========================================================================== */
+
+:root {
+    --ink: #1f2d24; /* body text, dark green-black */
+    --ink-soft: #5b6960; /* secondary text */
+    --paper: #edf0ea; /* page background, cool pale green-grey */
+    --surface: #ffffff; /* cards, table rows, form fields */
+    --sage: #6e8b74; /* secondary green */
+    --gold: #b8862b; /* single accent, used sparingly */
+    --rule: #d3d9cf; /* hairline borders */
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --font-ui: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.65;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.site-main {
+    flex: 1 0 auto;
+    padding: 3rem 0 4rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    /* Prose stays inside a comfortable reading measure. */
+    .site-main p {
+        max-width: 62ch;
+    }
+
+    .text-center p,
+    .site-main .text-center p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+a {
+    color: var(--gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+}
+
+    a:hover {
+        color: var(--ink);
+    }
+
+    /* Visible keyboard focus everywhere. */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+    }
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.15;
+}
+
+/* The one bold moment on the page: the page title. */
+.event-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    position: relative;
+}
+
+    /* A single hairline under the title, echoing printed stationery. */
+    .event-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 4.5rem;
+        height: 1px;
+        background-color: var(--gold);
+    }
+
+.text-center .event-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Header and navigation
+   -------------------------------------------------------------------------- */
+
+.site-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--rule);
+}
+
+.header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding: 1.25rem 0;
+}
+
+.site-mark {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .site-nav a {
+        font-family: var(--font-ui);
+        font-size: 0.9rem;
+        letter-spacing: 0.03em;
+        color: var(--ink-soft);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+    }
+
+        .site-nav a:hover {
+            color: var(--ink);
+            border-bottom-color: var(--gold);
+        }
+
+        .site-nav a.active {
+            color: var(--ink);
+            border-bottom-color: var(--gold);
+        }
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+    flex-shrink: 0;
+    background-color: var(--ink);
+    color: #c9d2c9;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    padding: 3rem 0 1.5rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    padding-bottom: 2rem;
+}
+
+.footer-heading {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+}
+
+.site-footer p {
+    margin: 0 0 0.5rem;
+}
+
+.site-footer a {
+    color: #e3c98a;
+}
+
+    .site-footer a:hover {
+        color: #ffffff;
+    }
+
+.footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .footer-links li {
+        margin-bottom: 0.35rem;
+    }
+
+.footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 1.25rem;
+    color: #98a598;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons (Bootstrap overrides)
+   -------------------------------------------------------------------------- */
+
+.btn {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    border-radius: 2px;
+    padding: 0.55rem 1.4rem;
+}
+
+.btn-primary,
+.btn-primary:focus {
+    background-color: var(--ink);
+    border-color: var(--ink);
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: var(--sage);
+        border-color: var(--sage);
+    }
+
+.btn-outline-primary,
+.btn-outline-secondary {
+    background-color: transparent;
+    border-color: var(--ink);
+    color: var(--ink);
+}
+
+    .btn-outline-primary:hover,
+    .btn-outline-secondary:hover {
+        background-color: var(--ink);
+        border-color: var(--ink);
+        color: #ffffff;
+    }
+
+.btn-danger {
+    background-color: transparent;
+    border-color: #9c4a3c;
+    color: #9c4a3c;
+}
+
+    .btn-danger:hover {
+        background-color: #9c4a3c;
+        border-color: #9c4a3c;
+        color: #ffffff;
+    }
+
+/* --------------------------------------------------------------------------------
+   Cards, gallery, lists
+   -------------------------------------------------------------------------- */
+
+.card {
+    background-color: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.card-body {
+    padding: 1.75rem;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
+
+.list-group-item {
+    background-color: var(--surface);
+    border-color: var(--rule);
+    border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
+
+.form-label,
+.form-check-label {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.form-control {
+    background-color: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    font-family: var(--font-ui);
+    padding: 0.6rem 0.75rem;
+}
+
+    .form-control:focus {
+        border-color: var(--sage);
+        box-shadow: none;
+    }
+
+.form-check-input:checked {
+    background-color: var(--ink);
+    border-color: var(--ink);
+}
+
+.text-danger {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   Tables, badges, alerts
+   -------------------------------------------------------------------------- */
+
+.table {
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    background-color: var(--surface);
+    border-color: var(--rule);
+}
+
+    .table thead th {
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        border-bottom: 2px solid var(--ink);
+    }
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: #f6f8f4;
+}
+
+.badge {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+    .badge.bg-success {
+        background-color: var(--sage) !important;
+    }
+
+    .badge.bg-secondary {
+        background-color: var(--ink-soft) !important;
+    }
+
+.alert {
+    font-family: var(--font-ui);
+    border-radius: 0;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold);
+    background-color: var(--surface);
+    color: var(--ink);
+}
+
+.alert-success {
+    border-left-color: var(--sage);
+}
+
+/* --------------------------------------------------------------------------
+   Added in Assignment 2: home page text blocks, filter form, dashboard
+   -------------------------------------------------------------------------- */
+
+.info-block {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+    .info-block:last-child {
+        border-bottom: none;
+    }
+
+.form-select {
+    border-radius: 0;
+    border-color: var(--rule);
+    font-family: var(--font-ui);
+}
+
+.badge.bg-warning {
+    background-color: #e9d7a8 !important;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
+    background-color: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--gold);
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    line-height: 1.1;
+    color: var(--ink);
+}
+
+.stat-label {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+.alert-warning {
+    border-left-color: #c0392b;
 }

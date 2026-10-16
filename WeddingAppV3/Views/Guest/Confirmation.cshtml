@@ -1,0 +1,31 @@
+@model Guest
+@{
+    ViewData["Title"] = "Thank you";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 text-center">
+        <h1 class="event-title">Thank You!</h1>
+
+        @if (Model.WillAttend == true)
+        {
+            <div class="alert alert-success">
+                Thank you, @Model.Name. We are delighted that you will be joining us
+                (@Model.NumberOfAttendants @(Model.NumberOfAttendants == 1 ? "person" : "people")),
+                and we look forward to celebrating with you.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-secondary">
+                Thank you for letting us know, @Model.Name. We are sorry you cannot make it,
+                and you will be missed on the day.
+            </div>
+        }
+
+        <p>Your response has been saved.</p>
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to the home page</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Guest list</a>
+    </div>
+</div>

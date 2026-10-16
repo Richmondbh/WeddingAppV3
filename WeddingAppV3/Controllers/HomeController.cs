@@ -1,32 +1,51 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WeddingAppV3.Data;
 using WeddingAppV3.Models;
 
 namespace WeddingAppV3.Controllers
 {
+    /// <summary>
+    /// Public pages that are not about guests or events: the home page,
+    /// the photo gallery and the error page.
+    /// </summary>
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        // GET: / or /Home/Index
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // The home page text comes from the database and is managed in the admin section.
+            List<WeddingInfo> infoBlocks = await _context.WeddingInfos
+                .OrderBy(w => w.DisplayOrder)
+                .ToListAsync();
+
+            return View(infoBlocks);
         }
 
-        public IActionResult Privacy()
+        // GET: /Home/Gallery
+        public IActionResult Gallery()
         {
+            // The pictures are static files in wwwroot/images, so no data is needed.
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ErrorViewModel model = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(model);
         }
     }
 }

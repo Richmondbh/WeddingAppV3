@@ -1,0 +1,5 @@
+@* Shows the one-time message a controller puts in TempData after saving. *@
+@if (TempData["StatusMessage"] is string message)
+{
+    <div class="alert alert-success">@message</div>
+}

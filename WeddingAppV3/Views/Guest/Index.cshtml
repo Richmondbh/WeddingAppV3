@@ -1,0 +1,96 @@
+@model GuestListViewModel
+@{
+    ViewData["Title"] = "Guest list";
+}
+
+<h1 class="event-title">Guest List</h1>
+
+<partial name="_StatusMessage" />
+
+<p>
+    Total guests: <strong>@Model.TotalGuests</strong> &nbsp;|&nbsp;
+    Attending: <strong>@Model.AttendingCount</strong> &nbsp;|&nbsp;
+    Not attending: <strong>@Model.NotAttendingCount</strong>
+</p>
+
+@* The select tag helpers mark the current choice as selected.
+   A GET form puts the choices in the URL, e.g. /Guest?filter=attending&sort=name *@
+<form asp-action="Index" method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-4">
+        <label asp-for="Search" class="form-label">Search by name</label>
+        <input asp-for="Search" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Filter" class="form-label">Show</label>
+        <select asp-for="Filter" class="form-select">
+            <option value="">All guests</option>
+            <option value="attending">Attending</option>
+            <option value="notattending">Not attending</option>
+            <option value="noresponse">No response yet</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Sort" class="form-label">Sort by</label>
+        <select asp-for="Sort" class="form-select">
+            <option value="">Name (A–Z)</option>
+            <option value="name_desc">Name (Z–A)</option>
+            <option value="status">RSVP status</option>
+            <option value="date">Newest registered</option>
+        </select>
+    </div>
+    <div class="col-md-2 text-nowrap">
+        <button type="submit" class="btn btn-primary">Apply</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+@if (Model.Guests.Count == 0)
+{
+    <p>No guests match your choices.</p>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Attending</th>
+                <th>Attendants</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Guest guest in Model.Guests)
+            {
+                <tr>
+                    <td>@guest.Name</td>
+                    <td>@guest.Email</td>
+                    <td>
+                        @if (guest.WillAttend == true)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                        }
+                        else if (guest.WillAttend == false)
+                        {
+                            <span class="badge bg-secondary">No</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">No response</span>
+                        }
+                    </td>
+                    <td>@guest.NumberOfAttendants</td>
+                    <td class="text-nowrap">
+                        <a asp-action="Rsvp" asp-route-id="@guest.Id" class="btn btn-sm btn-primary">RSVP</a>
+                        <a asp-action="Details" asp-route-id="@guest.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                        <a asp-action="Edit" asp-route-id="@guest.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@guest.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Create" class="btn btn-outline-primary">Register a new guest</a>
