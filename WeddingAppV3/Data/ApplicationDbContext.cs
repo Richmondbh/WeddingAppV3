@@ -1,14 +1,16 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Models;
 
 namespace WeddingAppV3.Data
 {
     /// <summary>
-    /// The link between the application and the SQLite database. Each DbSet
-    /// becomes one table. Sample data is added through HasData, so the first
-    /// migration creates the tables and fills them in one step.
+    /// The link between the application and the SQLite database.
+    /// It now inherits from IdentityDbContext instead of DbContext, which adds the
+    /// Identity tables (AspNetUsers, AspNetRoles, AspNetUserClaims and so on)
+    /// next to our own tables (Guests, Events, WeddingInfos).
     /// </summary>
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -23,9 +25,8 @@ namespace WeddingAppV3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Must be called first: it configures all the Identity tables.
             base.OnModelCreating(modelBuilder);
-
-       
 
             // Sample guests.
             modelBuilder.Entity<Guest>().HasData(

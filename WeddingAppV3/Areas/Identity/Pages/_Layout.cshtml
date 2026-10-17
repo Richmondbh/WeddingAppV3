@@ -1,0 +1,14 @@
+@*
+    The "My account" (Manage) pages of Identity look for a layout at exactly this path.
+    This small file simply passes them on to our normal site layout, so every
+    Identity page has the same header and footer as the rest of the website.
+*@
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@RenderBody()
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
