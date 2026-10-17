@@ -436,3 +436,28 @@ h2 {
 .alert-warning {
     border-left-color: #c0392b;
 }
+/* --------------------------------------------------------------------------
+   Assignment 3: Logout button in the menu (looks like the other menu links)
+   -------------------------------------------------------------------------- */
+
+.nav-logout-form {
+    display: inline;
+    margin: 0;
+}
+
+.nav-logout-button {
+    background: none;
+    border: none;
+    padding: 0 0 2px 0;
+    border-bottom: 1px solid transparent;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    cursor: pointer;
+}
+
+    .nav-logout-button:hover {
+        color: var(--ink);
+        border-bottom-color: var(--gold);
+    }

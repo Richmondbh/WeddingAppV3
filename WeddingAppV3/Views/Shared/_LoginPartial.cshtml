@@ -1,0 +1,30 @@
+@*
+    The account links in the menu. Logged-in users see "My account" and "Logout",
+    anonymous visitors see "Register" and "Login".
+    Logout is a small form because signing out must be done with a POST request.
+*@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage your account">My account</a>
+    </li>
+    <li>
+        <form asp-area="Identity" asp-page="/Account/Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+              method="post" class="nav-logout-form">
+            <button type="submit" class="nav-logout-button">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li>
+        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
