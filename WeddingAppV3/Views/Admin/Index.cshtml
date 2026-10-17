@@ -1,4 +1,4 @@
-@model DashboardViewModel
+Updatee@model DashboardViewModel
 @{
     ViewData["Title"] = "Admin dashboard";
 }
@@ -77,11 +77,11 @@
 else
 {
     <ul class="list-group mb-4">
-        @foreach (Guest guest in Model.RecentMessages)
+        @foreach (GuestMessageViewModel item in Model.RecentMessages)
         {
             <li class="list-group-item">
-                <strong>@guest.Name</strong>
-                <p class="mb-0">@guest.Message</p>
+                <strong>@item.Name</strong>
+                <p class="mb-0">@item.Message</p>
             </li>
         }
     </ul>
