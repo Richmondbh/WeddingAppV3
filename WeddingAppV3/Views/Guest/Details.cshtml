@@ -1,8 +1,6 @@
-@model Guest
+@model GuestDetailsViewModel
 @{
     ViewData["Title"] = "Guest details";
-    string attendText = Model.WillAttend == true ? "Yes"
-        : Model.WillAttend == false ? "No" : "No response yet";
 }
 
 <h1 class="event-title">@Model.Name</h1>
@@ -15,7 +13,7 @@
     <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "–" : Model.PhoneNumber)</dd>
 
     <dt class="col-sm-3">@Html.DisplayNameFor(m => m.WillAttend)</dt>
-    <dd class="col-sm-9">@attendText</dd>
+    <dd class="col-sm-9">@Model.Status</dd>
 
     <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NumberOfAttendants)</dt>
     <dd class="col-sm-9">@Model.NumberOfAttendants</dd>
