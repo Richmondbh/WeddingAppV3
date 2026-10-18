@@ -63,9 +63,22 @@ namespace WeddingAppV3.Controllers
                 query = query.OrderBy(g => g.Name);
             }
 
+            // Assignment 3: Select() projects each Guest entity into a GuestViewModel,
+            // so only the columns the page needs are read from the database.
+            List<GuestViewModel> guests = await query
+                .Select(g => new GuestViewModel
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Email = g.Email,
+                    WillAttend = g.WillAttend,
+                    NumberOfAttendants = g.NumberOfAttendants
+                })
+                .ToListAsync();
+
             GuestListViewModel model = new GuestListViewModel
             {
-                Guests = await query.ToListAsync(),
+                Guests = guests,
                 Filter = filter,
                 Sort = sort,
                 Search = search,
@@ -85,7 +98,21 @@ namespace WeddingAppV3.Controllers
                 return NotFound();
             }
 
-            Guest guest = await _context.Guests.FirstOrDefaultAsync(g => g.Id == id);
+            // Assignment 3: the details page gets a GuestDetailsViewModel, not the entity.
+            GuestDetailsViewModel guest = await _context.Guests
+                .Where(g => g.Id == id)
+                .Select(g => new GuestDetailsViewModel
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Email = g.Email,
+                    PhoneNumber = g.PhoneNumber,
+                    WillAttend = g.WillAttend,
+                    NumberOfAttendants = g.NumberOfAttendants,
+                    Message = g.Message,
+                    RegisteredOn = g.RegisteredOn
+                })
+                .FirstOrDefaultAsync();
 
             if (guest == null)
             {

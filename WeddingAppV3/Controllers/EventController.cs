@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
 using WeddingAppV3.Models;
+using WeddingAppV3.ViewModels;
 
 namespace WeddingAppV3.Controllers
 {
@@ -19,9 +20,22 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Event  (public page)
+        // Assignment 3: the public page receives EventViewModel objects instead of entities.
         public async Task<IActionResult> Index()
         {
-            List<Event> events = await _context.Events.OrderBy(e => e.Id).ToListAsync();
+            List<EventViewModel> events = await _context.Events
+                .OrderBy(e => e.Id)
+                .Select(e => new EventViewModel
+                {
+                    Id = e.Id,
+                    Title = e.Title,
+                    Date = e.Date,
+                    Time = e.Time,
+                    Location = e.Location,
+                    Description = e.Description
+                })
+                .ToListAsync();
+
             return View(events);
         }
 
