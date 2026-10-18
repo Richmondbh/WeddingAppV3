@@ -20,7 +20,7 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Event  (public page)
-        // Assignment 3: the public page receives EventViewModel objects instead of entities.
+        //the public page receives EventViewModel objects instead of entities.
         public async Task<IActionResult> Index()
         {
             List<EventViewModel> events = await _context.Events

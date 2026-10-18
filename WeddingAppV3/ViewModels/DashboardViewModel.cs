@@ -1,10 +1,10 @@
-using WeddingAppV3.Models;
-
 namespace WeddingAppV3.ViewModels
 {
     /// <summary>
-    /// RSVP statistics and recent activity for the admin dashboard and all values
+    /// RSVP statistics and recent activity for the admin dashboard. All values
     /// are calculated from the database in AdminController.
+    ///  RecentMessages now holds GuestMessageViewModel objects
+    /// instead of whole Guest entities.
     /// </summary>
     public class DashboardViewModel
     {
@@ -24,6 +24,6 @@ namespace WeddingAppV3.ViewModels
         public int WeddingInfoCount { get; set; }
 
         // Latest guests who left a message.
-        public List<Guest> RecentMessages { get; set; } = new List<Guest>();
+        public List<GuestMessageViewModel> RecentMessages { get; set; } = new List<GuestMessageViewModel>();
     }
 }
