@@ -1,4 +1,4 @@
-@model List<Event>
+@model List<EventViewModel>
 @{
     ViewData["Title"] = "Event";
 }
@@ -12,7 +12,7 @@
             <p>The programme will be published soon.</p>
         }
 
-        @foreach (Event item in Model)
+        @foreach (EventViewModel item in Model)
         {
             <div class="card mb-3">
                 <div class="card-body">
