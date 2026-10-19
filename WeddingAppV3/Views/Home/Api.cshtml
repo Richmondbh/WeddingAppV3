@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Web API";
+}
+
+<h1 class="event-title">Web API</h1>
+
+<p>
+    These addresses return <strong>JSON</strong> instead of web pages. Click a link to try it
+    in the browser. Other programs (a mobile app, a JavaScript front end, Postman ...) can use
+    the same addresses.
+</p>
+
+<h2 class="h4 mt-4">Guests</h2>
+<ul>
+    <li><a href="/api/guests">/api/guests</a> &ndash; all guests</li>
+    <li><a href="/api/guests?status=attending">/api/guests?status=attending</a> &ndash; filter (attending, declined, noresponse)</li>
+    <li><a href="/api/guests?sort=name_desc">/api/guests?sort=name_desc</a> &ndash; sort (name, name_desc, newest)</li>
+    <li><a href="/api/guests/1">/api/guests/1</a> &ndash; one guest</li>
+    <li><a href="/api/guests/999">/api/guests/999</a> &ndash; a guest that does not exist (404)</li>
+    <li><a href="/api/guests/attending">/api/guests/attending</a> &ndash; attending guests (anonymous type)</li>
+</ul>
+
+<h2 class="h4 mt-4">Events</h2>
+<ul>
+    <li><a href="/api/events">/api/events</a> &ndash; all events</li>
+    <li><a href="/api/events?location=hall">/api/events?location=hall</a> &ndash; search by location</li>
+    <li><a href="/api/events/2">/api/events/2</a> &ndash; one event</li>
+    <li><a href="/api/events/overview">/api/events/overview</a> &ndash; short overview (anonymous type)</li>
+</ul>
