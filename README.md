@@ -1,0 +1,1 @@
+A wedding website built with ASP.NET Core MVC and Entity Framework Core. Guests register and respond to the invitation. The hosts manage guests, events and site content from an admin section. All data is stored in a SQLite database.
