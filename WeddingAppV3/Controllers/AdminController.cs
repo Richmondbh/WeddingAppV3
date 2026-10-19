@@ -36,7 +36,7 @@ namespace WeddingAppV3.Controllers
                 EventCount = await _context.Events.CountAsync(),
                 WeddingInfoCount = await _context.WeddingInfos.CountAsync(),
 
-                // Assignment 3: only the name and the message are projected into a ViewModel.
+                //  only the name and the message are projected into a ViewModel.
                 RecentMessages = await _context.Guests
                     .Where(g => g.Message != null && g.Message != "")
                     .OrderByDescending(g => g.RegisteredOn)
