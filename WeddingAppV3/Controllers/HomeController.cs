@@ -37,6 +37,13 @@ namespace WeddingAppV3.Controllers
             return View();
         }
 
+        // GET: /Home/Api
+        // A help page that lists the Web API endpoints with clickable links.
+        public IActionResult Api()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
