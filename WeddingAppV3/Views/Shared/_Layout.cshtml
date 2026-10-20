@@ -1,11 +1,14 @@
 @*
     Shared layout used by every view: header with the navigation menu,
     the main content area and the footer.
-    Assignment 3: asp-area="" is added to the links so they still work when the
+    asp-area="" is added to the links so they still work when the
     current page is one of the Identity pages (which live in the "Identity" area).
 *@
 
 @{
+    //  admin links are only shown to users with the Admin role.
+    bool isAdmin = User.IsInRole("Admin");
+
     string currentController = ViewContext.RouteData.Values["controller"] as string;
     string currentAction = ViewContext.RouteData.Values["action"] as string;
 
@@ -66,14 +69,17 @@
                         <a asp-area="" asp-controller="Guest" asp-action="Create"
                            class="@(IsActive("Register") ? "active" : null)">Register Guest</a>
                     </li>
-                    <li>
-                        <a asp-area="" asp-controller="Guest" asp-action="Index"
-                           class="@(IsActive("Guests") ? "active" : null)">List Guests</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="Admin" asp-action="Index"
-                           class="@(IsActive("Admin") ? "active" : null)">Admin</a>
-                    </li>
+                    @if (isAdmin)
+                    {
+                        <li>
+                            <a asp-area="" asp-controller="Guest" asp-action="Index"
+                               class="@(IsActive("Guests") ? "active" : null)">List Guests</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Admin" asp-action="Index"
+                               class="@(IsActive("Admin") ? "active" : null)">Admin</a>
+                        </li>
+                    }
 
                     @* Register / Login or My account / Logout *@
                     <partial name="_LoginPartial" />
@@ -114,6 +120,7 @@
                         <li><a asp-area="" asp-controller="Event" asp-action="Index">Event details</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Gallery">Photo gallery</a></li>
                         <li><a asp-area="" asp-controller="Guest" asp-action="Create">Register as a guest</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Api">Web API</a></li>
                     </ul>
                 </div>
             </div>
