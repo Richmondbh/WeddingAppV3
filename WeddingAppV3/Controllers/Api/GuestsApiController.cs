@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
@@ -19,6 +20,7 @@ namespace WeddingAppV3.Controllers.Api
     /// </summary>
     [Route("api/guests")]
     [ApiController]
+    [Authorize(Roles = "Admin")] // guest data is personal: only admins (401/403 otherwise)
     public class GuestsApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -122,6 +124,7 @@ namespace WeddingAppV3.Controllers.Api
         // Uses an ANONYMOUS TYPE: new { ... } without a class name.
         // Only the name and the number of attendants are sent to the client.
         [HttpGet("attending")]
+        [AllowAnonymous] // only names are returned, so this one is public
         public async Task<IActionResult> GetAttendingGuests()
         {
             var attendingGuests = await _context.Guests
