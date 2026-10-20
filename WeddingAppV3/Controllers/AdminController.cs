@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
@@ -9,6 +10,7 @@ namespace WeddingAppV3.Controllers
     /// The administration dashboard: RSVP statistics calculated from the
     /// database, plus links to guest, event and wedding information management.
     /// </summary>
+    [Authorize(Roles = "Admin")] // only users with the Admin role
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -36,7 +38,7 @@ namespace WeddingAppV3.Controllers
                 EventCount = await _context.Events.CountAsync(),
                 WeddingInfoCount = await _context.WeddingInfos.CountAsync(),
 
-                //  only the name and the message are projected into a ViewModel.
+                // only the name and the message are projected into a ViewModel.
                 RecentMessages = await _context.Guests
                     .Where(g => g.Message != null && g.Message != "")
                     .OrderByDescending(g => g.RegisteredOn)

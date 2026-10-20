@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
@@ -10,6 +11,7 @@ namespace WeddingAppV3.Controllers
     /// The public Event page (Index) and the admin pages for creating,
     /// editing and deleting the events of the wedding day.
     /// </summary>
+    [Authorize(Roles = "Admin")] // every action requires the Admin role ...
     public class EventController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,7 +22,8 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Event  (public page)
-        //the public page receives EventViewModel objects instead of entities.
+        [AllowAnonymous] // ... except the public Event page
+        // public page receives EventViewModel objects instead of entities.
         public async Task<IActionResult> Index()
         {
             List<EventViewModel> events = await _context.Events

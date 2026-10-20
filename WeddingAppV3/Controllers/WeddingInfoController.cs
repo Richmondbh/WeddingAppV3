@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
@@ -9,6 +10,7 @@ namespace WeddingAppV3.Controllers
     /// Admin pages for the text blocks on the home page (welcome message,
     /// venue, contact and so on). Full create, read, update and delete.
     /// </summary>
+    [Authorize(Roles = "Admin")] // only users with the Admin role
     public class WeddingInfoController : Controller
     {
         private readonly ApplicationDbContext _context;
