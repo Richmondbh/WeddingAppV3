@@ -20,7 +20,7 @@ namespace WeddingAppV3.Controllers.Api
     /// </summary>
     [Route("api/guests")]
     [ApiController]
-    [Authorize(Roles = "Admin")] // guest data is personal: only admins (401/403 otherwise)
+    [Authorize(Policy = "GuestManager")] // guest data is personal: claim CanManageGuests needed (401/403 otherwise)
     public class GuestsApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

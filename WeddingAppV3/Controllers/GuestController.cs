@@ -10,8 +10,9 @@ namespace WeddingAppV3.Controllers
     /// <summary>
     /// Everything about guests: register, list (with search, filter and sort),
     /// RSVP, details, edit and delete. All database calls are asynchronous.
-    /// Register (Create), RSVP and Confirmation are public.
-    /// The guest list, details, edit and delete are protected with [Authorize].
+    /// Assignment 3: Register (Create), RSVP and Confirmation are public.
+    /// The guest list, details, edit and delete are protected with the claims-based
+    /// policy "GuestManager" (the user needs the claim CanManageGuests = true).
     /// </summary>
     public class GuestController : Controller
     {
@@ -23,7 +24,7 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /filter, sorting and search
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         public async Task<IActionResult> Index(string filter, string sort, string search)
         {
             // Starts with all guests and narrow the query step by step.
@@ -67,7 +68,7 @@ namespace WeddingAppV3.Controllers
                 query = query.OrderBy(g => g.Name);
             }
 
-            // Select() projects each Guest entity into a GuestViewModel,
+            // Assignment 3: Select() projects each Guest entity into a GuestViewModel,
             // so only the columns the page needs are read from the database.
             List<GuestViewModel> guests = await query
                 .Select(g => new GuestViewModel
@@ -95,7 +96,7 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Guest/Details/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -103,7 +104,7 @@ namespace WeddingAppV3.Controllers
                 return NotFound();
             }
 
-            // the details page gets a GuestDetailsViewModel, not the entity.
+            // Assignment 3: the details page gets a GuestDetailsViewModel, not the entity.
             GuestDetailsViewModel guest = await _context.Guests
                 .Where(g => g.Id == id)
                 .Select(g => new GuestDetailsViewModel
@@ -238,7 +239,7 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Guest/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -258,7 +259,7 @@ namespace WeddingAppV3.Controllers
 
         // POST: /Guest/Edit/5
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,Name,Email,PhoneNumber,WillAttend,NumberOfAttendants,Message")] Guest guest)
@@ -295,7 +296,7 @@ namespace WeddingAppV3.Controllers
         }
 
         // GET: /Guest/Delete/5  (asking  for confirmation)
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -315,7 +316,7 @@ namespace WeddingAppV3.Controllers
 
         // POST: /Guest/Delete/5  (runs only after the user confirms)
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "GuestManager")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
