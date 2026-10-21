@@ -1,45 +1,81 @@
 @model DashboardViewModel
 @{
     ViewData["Title"] = "Admin dashboard";
+    StatisticsViewModel stats = Model.Statistics;
 }
 
 <h1 class="event-title">Admin Dashboard</h1>
 
 <h2 class="h4">RSVP statistics</h2>
 
-<div class="row g-3 mb-4">
+<div class="row g-3 mb-3">
     <div class="col-6 col-md-3">
         <div class="stat-card">
-            <span class="stat-value">@Model.TotalGuests</span>
+            <span class="stat-value">@stats.TotalGuests</span>
             <span class="stat-label">Registered guests</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="stat-card">
-            <span class="stat-value">@Model.AttendingCount</span>
+            <span class="stat-value">@stats.AttendingGuests</span>
             <span class="stat-label">Attending</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="stat-card">
-            <span class="stat-value">@Model.NotAttendingCount</span>
+            <span class="stat-value">@stats.DeclinedGuests</span>
             <span class="stat-label">Not attending</span>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="stat-card">
-            <span class="stat-value">@Model.TotalAttendants</span>
+            <span class="stat-value">@stats.TotalAttendants</span>
             <span class="stat-label">Total attendants</span>
         </div>
     </div>
 </div>
 
-<p>Guests who have not answered yet: <strong>@Model.NoResponseCount</strong></p>
+<p>
+    Attendance: <strong>@stats.AttendancePercentage %</strong> &nbsp;|&nbsp;
+    Response rate: <strong>@stats.ResponseRate %</strong> &nbsp;|&nbsp;
+    Average party size: <strong>@stats.AverageAttendantsPerGuest</strong> &nbsp;|&nbsp;
+    Not answered yet: <strong>@stats.NoResponseGuests</strong>
+</p>
+
+@* The groups come from GroupBy() in StatisticsService. *@
+<table class="table table-sm align-middle mb-4">
+    <thead>
+        <tr>
+            <th>RSVP answer</th>
+            <th>Guests</th>
+            <th>Attendants</th>
+            <th style="width: 40%">Share of all guests</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (AttendanceGroupViewModel group in Model.AttendanceGroups)
+        {
+            <tr>
+                <td>@group.Status</td>
+                <td>@group.NumberOfGuests</td>
+                <td>@group.NumberOfAttendants</td>
+                <td>
+                    <div class="progress" role="progressbar" aria-label="@group.Status"
+                         aria-valuenow="@group.Percentage" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: @(group.Percentage.ToString(System.Globalization.CultureInfo.InvariantCulture))%">
+                            @group.Percentage %
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 <h2 class="h4 mt-4">Manage</h2>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-3">
         <div class="card h-100">
             <div class="card-body">
                 <h3 class="h5">Guests</h3>
@@ -48,16 +84,16 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-3">
         <div class="card h-100">
             <div class="card-body">
-                <h3 class="h5">Events (@Model.EventCount)</h3>
+                <h3 class="h5">Events (@stats.NumberOfEvents)</h3>
                 <p>Ceremony, dinner, party and other parts of the day.</p>
                 <a asp-controller="Event" asp-action="Manage" class="btn btn-primary">Manage events</a>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-3">
         <div class="card h-100">
             <div class="card-body">
                 <h3 class="h5">Wedding information (@Model.WeddingInfoCount)</h3>
@@ -66,7 +102,23 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="h5">Users and roles (@Model.UserCount)</h3>
+                <p>Give or remove the Admin and User roles and the CanManageGuests claim.</p>
+                <a asp-controller="Users" asp-action="Index" class="btn btn-primary">Manage users</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<p>
+    The same statistics as JSON:
+    <a href="/api/statistics">/api/statistics</a> &middot;
+    <a href="/api/statistics/attendance">/api/statistics/attendance</a> &middot;
+    <a asp-controller="Home" asp-action="Api">all API endpoints</a>
+</p>
 
 <h2 class="h4">Latest guest messages</h2>
 
