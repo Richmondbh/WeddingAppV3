@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WeddingAppV3.Data;
 using WeddingAppV3.Models;
+using WeddingAppV3.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 // When someone who is not logged in opens a protected PAGE, they are sent to the
 // login page. For the Web API (addresses starting with /api) a redirect makes no
-// sense, so i answer 401 Unauthorized / 403 Forbidden instead.
+// sense, so we answer 401 Unauthorized / 403 Forbidden instead.
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Events.OnRedirectToLogin = context =>
@@ -55,9 +56,21 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
+// Claims-based authorization: the policy "GuestManager" is met by every user who
+// has the claim CanManageGuests with the value "true" (whatever their role is).
+// Used with [Authorize(Policy = "GuestManager")] on the guest management pages.
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("GuestManager", policy =>
+        policy.RequireClaim("CanManageGuests", "true"));
+});
+
+// The service layer. AddScoped = one StatisticsService object per HTTP request.
+builder.Services.AddScoped<StatisticsService>();
+
 var app = builder.Build();
 
-// Creates the roles (Admin, User) and the test accounts when the application starts.
+// Creates the roles (Admin, User), the test accounts and their claims when the application starts.
 using (IServiceScope scope = app.Services.CreateScope())
 {
     await SeedData.InitializeAsync(scope.ServiceProvider);

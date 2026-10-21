@@ -1,0 +1,92 @@
+@model List<UserAccountViewModel>
+@{
+    ViewData["Title"] = "Users and roles";
+}
+
+<h1 class="event-title">Users and Roles</h1>
+
+<partial name="_StatusMessage" />
+
+<p>
+    <strong>Roles:</strong> <em>Admin</em> can open the whole administration area.
+    <em>User</em> is a normal account.<br />
+    <strong>Claim:</strong> <em>CanManageGuests</em> gives access to the guest list
+    (policy <code>GuestManager</code>), even without the Admin role.
+</p>
+<p class="text-muted small">
+    Changes for other users take effect the next time they log in.
+</p>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Admin role</th>
+            <th>User role</th>
+            <th>CanManageGuests claim</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserAccountViewModel user in Model)
+        {
+            <tr>
+                <td>
+                    @user.Email
+                    @if (user.IsCurrentUser)
+                    {
+                        <span class="badge bg-info text-dark">you</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="ToggleRole" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <input type="hidden" name="role" value="Admin" />
+                        @if (user.IsAdmin)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                            @if (!user.IsCurrentUser)
+                            {
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Give</button>
+                        }
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="ToggleRole" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <input type="hidden" name="role" value="User" />
+                        @if (user.IsUser)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Give</button>
+                        }
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="ToggleGuestManager" asp-route-id="@user.Id" method="post" class="d-inline">
+                        @if (user.CanManageGuests)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Give</button>
+                        }
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">Back to dashboard</a>
