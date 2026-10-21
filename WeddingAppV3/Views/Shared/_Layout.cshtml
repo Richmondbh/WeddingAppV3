@@ -5,9 +5,14 @@
     current page is one of the Identity pages (which live in the "Identity" area).
 *@
 
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 @{
-    //  admin links are only shown to users with the Admin role.
+    //  links are only shown to users who are allowed to open them.
+    // Admin: role-based. List Guests: claims-based policy "GuestManager".
     bool isAdmin = User.IsInRole("Admin");
+    bool canManageGuests = (await AuthorizationService.AuthorizeAsync(User, "GuestManager")).Succeeded;
 
     string currentController = ViewContext.RouteData.Values["controller"] as string;
     string currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -29,6 +34,7 @@
                 return currentController == "Guest" && currentAction != "Create";
             case "Admin":
                 return currentController == "Admin"
+                    || currentController == "Users"
                     || currentController == "WeddingInfo"
                     || (currentController == "Event" && currentAction != "Index");
             default:
@@ -69,12 +75,15 @@
                         <a asp-area="" asp-controller="Guest" asp-action="Create"
                            class="@(IsActive("Register") ? "active" : null)">Register Guest</a>
                     </li>
-                    @if (isAdmin)
+                    @if (canManageGuests)
                     {
                         <li>
                             <a asp-area="" asp-controller="Guest" asp-action="Index"
                                class="@(IsActive("Guests") ? "active" : null)">List Guests</a>
                         </li>
+                    }
+                    @if (isAdmin)
+                    {
                         <li>
                             <a asp-area="" asp-controller="Admin" asp-action="Index"
                                class="@(IsActive("Admin") ? "active" : null)">Admin</a>

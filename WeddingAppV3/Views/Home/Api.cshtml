@@ -9,21 +9,36 @@
     in the browser. Other programs (a mobile app, a JavaScript front end, Postman ...) can use
     the same addresses.
 </p>
+<p>
+    Protected endpoints answer <code>401 Unauthorized</code> when you are not logged in and
+    <code>403 Forbidden</code> when you are logged in without the right role or claim.
+    Test accounts: <code>admin@@wedding.se / Admin123!</code>,
+    <code>planner@@wedding.se / Planner123!</code>, <code>user@@wedding.se / User123!</code>.
+</p>
 
-<h2 class="h4 mt-4">Guests</h2>
-<ul>
-    <li><a href="/api/guests">/api/guests</a> &ndash; all guests</li>
-    <li><a href="/api/guests?status=attending">/api/guests?status=attending</a> &ndash; filter (attending, declined, noresponse)</li>
-    <li><a href="/api/guests?sort=name_desc">/api/guests?sort=name_desc</a> &ndash; sort (name, name_desc, newest)</li>
-    <li><a href="/api/guests/1">/api/guests/1</a> &ndash; one guest</li>
-    <li><a href="/api/guests/999">/api/guests/999</a> &ndash; a guest that does not exist (404)</li>
-    <li><a href="/api/guests/attending">/api/guests/attending</a> &ndash; attending guests (anonymous type)</li>
-</ul>
-
-<h2 class="h4 mt-4">Events</h2>
+<h2 class="h4 mt-4">Events <span class="badge bg-success">public</span></h2>
 <ul>
     <li><a href="/api/events">/api/events</a> &ndash; all events</li>
     <li><a href="/api/events?location=hall">/api/events?location=hall</a> &ndash; search by location</li>
     <li><a href="/api/events/2">/api/events/2</a> &ndash; one event</li>
+    <li><a href="/api/events/99">/api/events/99</a> &ndash; an event that does not exist (404)</li>
     <li><a href="/api/events/overview">/api/events/overview</a> &ndash; short overview (anonymous type)</li>
+</ul>
+
+<h2 class="h4 mt-4">Guests</h2>
+<ul>
+    <li><a href="/api/guests/attending">/api/guests/attending</a> &ndash; attending guests, names only (anonymous type) <span class="badge bg-success">public</span></li>
+    <li><a href="/api/guests">/api/guests</a> &ndash; all guests <span class="badge bg-warning text-dark">claim CanManageGuests</span></li>
+    <li><a href="/api/guests?status=attending">/api/guests?status=attending</a> &ndash; filter (attending, declined, noresponse) <span class="badge bg-warning text-dark">claim CanManageGuests</span></li>
+    <li><a href="/api/guests?sort=name_desc">/api/guests?sort=name_desc</a> &ndash; sort (name, name_desc, newest) <span class="badge bg-warning text-dark">claim CanManageGuests</span></li>
+    <li><a href="/api/guests?status=maybe">/api/guests?status=maybe</a> &ndash; invalid filter (400) <span class="badge bg-warning text-dark">claim CanManageGuests</span></li>
+    <li><a href="/api/guests/1">/api/guests/1</a> &ndash; one guest <span class="badge bg-warning text-dark">claim CanManageGuests</span></li>
+</ul>
+
+<h2 class="h4 mt-4">Statistics <span class="badge bg-danger">role Admin</span></h2>
+<ul>
+    <li><a href="/api/statistics">/api/statistics</a> &ndash; totals, attendance percentage, averages</li>
+    <li><a href="/api/statistics/attendance">/api/statistics/attendance</a> &ndash; guests grouped by RSVP answer (GroupBy)</li>
+    <li><a href="/api/statistics/registrations?page=1&amp;pageSize=2">/api/statistics/registrations?page=1&amp;pageSize=2</a> &ndash; newest registrations, page by page (Skip/Take)</li>
+    <li><a href="/api/statistics/events">/api/statistics/events</a> &ndash; events grouped by date</li>
 </ul>
