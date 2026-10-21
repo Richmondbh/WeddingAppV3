@@ -1,27 +1,18 @@
 namespace WeddingAppV3.ViewModels
 {
     /// <summary>
-    /// RSVP statistics and recent activity for the admin dashboard. All values
-    /// are calculated from the database in AdminController.
-    ///  RecentMessages now holds GuestMessageViewModel objects
-    /// instead of whole Guest entities.
+    /// Everything the admin dashboard shows. It is built from smaller ViewModels:
+    /// the calculated statistics, the attendance groups and the latest messages.
     /// </summary>
     public class DashboardViewModel
     {
-        public int TotalGuests { get; set; }
+        public StatisticsViewModel Statistics { get; set; } = new StatisticsViewModel();
 
-        public int AttendingCount { get; set; }
-
-        public int NotAttendingCount { get; set; }
-
-        public int NoResponseCount { get; set; }
-
-        // Sum of NumberOfAttendants for the guests who will attend.
-        public int TotalAttendants { get; set; }
-
-        public int EventCount { get; set; }
+        public List<AttendanceGroupViewModel> AttendanceGroups { get; set; } = new List<AttendanceGroupViewModel>();
 
         public int WeddingInfoCount { get; set; }
+
+        public int UserCount { get; set; }
 
         // Latest guests who left a message.
         public List<GuestMessageViewModel> RecentMessages { get; set; } = new List<GuestMessageViewModel>();
