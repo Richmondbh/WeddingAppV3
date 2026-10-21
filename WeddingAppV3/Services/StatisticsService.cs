@@ -86,7 +86,7 @@ namespace WeddingAppV3.Services
                 .ToList();
         }
 
-        // part / total as a percentage with one decimal, e.g. 70.8. Avoids division by zero.
+        // part / total as a percentage with one decimal, for example 70.8. Avoids division by zero.
         private static double Percentage(int part, int total)
         {
             if (total == 0)

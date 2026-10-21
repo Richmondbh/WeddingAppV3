@@ -23,7 +23,7 @@ namespace WeddingAppV3.Models
         [Display(Name = "Email address")]
         public string Email { get; set; }
 
-        // Added in the second migration (AddPhoneNumber). Optional.
+        // Added in the second migration (AddPhoneNumber). 
         [Phone(ErrorMessage = "Please enter a valid phone number.")]
         [StringLength(20)]
         [Display(Name = "Phone number")]
