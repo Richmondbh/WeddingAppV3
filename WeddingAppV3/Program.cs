@@ -6,13 +6,13 @@ using WeddingAppV3.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MVC controllers and views (as in Assignment 2).
+// MVC controllers and views).
 builder.Services.AddControllersWithViews();
 
 // The Identity pages (Login, Register, Logout ...) are Razor Pages.
 builder.Services.AddRazorPages();
 
-// Registers the DbContext (as in Assignment 2).
+// Registers the DbContext.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -26,7 +26,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 // When someone who is not logged in opens a protected PAGE, they are sent to the
 // login page. For the Web API (addresses starting with /api) a redirect makes no
-// sense, so we answer 401 Unauthorized / 403 Forbidden instead.
+// sense, so i answer 401 Unauthorized / 403 Forbidden instead. 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Events.OnRedirectToLogin = context =>
