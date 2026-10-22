@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using WeddingAppV3.Data;
+using WeddingAppV3.Models;
 
 namespace WeddingAppV3.Areas.Identity.Pages.Account;
 

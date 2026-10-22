@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WeddingAppV3.Data;
+using WeddingAppV3.Models;
 
 namespace WeddingAppV3.Areas.Identity.Pages.Account.Manage;
 

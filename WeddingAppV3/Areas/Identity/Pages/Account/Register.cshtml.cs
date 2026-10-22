@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WeddingAppV3.Data;
+using WeddingAppV3.Models;
 
 namespace WeddingAppV3.Areas.Identity.Pages.Account;
 
