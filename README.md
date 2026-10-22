@@ -17,7 +17,9 @@ It builds on the ASP.NET Core MVC and Entity Framework Core app from Assignment 
 ### User accounts (ASP.NET Core Identity)
 - Register, log in and log out
 - The menu changes depending on whether the user is logged in
-- A "My account" page for managing the account
+- A "My account" page for managing the account, e.g. changing the password
+- The Identity pages are **scaffolded** into the project (`Areas/Identity/Pages/Account`), so their code can be read and changed
+- The Identity pages use the same layout as the rest of the site (`Views/Shared/_Layout.cshtml`)
 
 ### Admin area (protected)
 - Dashboard with RSVP statistics: attendance percentage, response rate, average party size and guests grouped by RSVP answer
@@ -54,31 +56,46 @@ The API returns `200 OK`, `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`
 
 - Role-based authorization: `[Authorize(Roles = "Admin")]`
 - Claims-based authorization: `[Authorize(Policy = "GuestManager")]`
+- Protected pages redirect to the login page. Protected API endpoints answer `401` or `403` instead of redirecting.
 - The roles and test accounts are created automatically when the app starts (`Data/SeedData.cs`).
 
 ## Technologies
 
 - ASP.NET Core MVC (.NET 9)
 - Entity Framework Core 9 with SQLite
-- ASP.NET Core Identity (roles and claims)
+- ASP.NET Core Identity with scaffolded Razor Pages (roles and claims)
 - Web API controllers (`ControllerBase`, `[ApiController]`)
 - LINQ: `Where`, `Select`, `OrderBy`, `OrderByDescending`, `Count`, `Sum`, `Average`, `GroupBy`, `Skip`, `Take`
 - ViewModels and anonymous types instead of exposing entities
 - A service layer (`StatisticsService`) shared by the MVC and API controllers
 - Bootstrap 5
 
+### NuGet packages
+| Package | Version |
+|---|---|
+| Microsoft.AspNetCore.Identity.EntityFrameworkCore | 9.0.21 |
+| Microsoft.AspNetCore.Identity.UI | 9.0.21 |
+| Microsoft.EntityFrameworkCore | 9.0.21 |
+| Microsoft.EntityFrameworkCore.Sqlite | 9.0.21 |
+| Microsoft.EntityFrameworkCore.Tools | 9.0.21 |
+| Microsoft.VisualStudio.Web.CodeGeneration.Design (used for scaffolding) | 9.0.12 |
+
 ## Project structure
 
 ```
 WeddingAppV3/
-├── Areas/Identity/Pages/   Layout settings for the Identity pages
+├── Areas/Identity/Pages/
+│   ├── Account/            Scaffolded Identity pages (Login, Register, Logout, Manage, ...)
+│   ├── _Layout.cshtml      Passes the Identity pages on to the site layout
+│   └── _ViewStart.cshtml   Layout = "/Views/Shared/_Layout.cshtml"
 ├── Controllers/            MVC controllers (Home, Guest, Event, Admin, WeddingInfo, Users)
 │   └── Api/                API controllers (GuestsApi, EventsApi, StatisticsApi)
 ├── Data/                   ApplicationDbContext and SeedData
+├── Migrations/             EF Core migrations (InitialCreate, AddIdentity)
 ├── Models/                 Entities: Guest, Event, WeddingInfo, ApplicationUser
 ├── Services/               StatisticsService
 ├── ViewModels/             Guest, GuestDetails, Event, Dashboard, Statistics, ...
-├── Views/                  Razor views and the shared layout
+├── Views/                  Razor views, the shared layout and _LoginPartial
 └── wwwroot/                CSS, images and libraries
 ```
 
@@ -103,6 +120,14 @@ The SQLite database `WeddingV3.db` is created in the project folder and filled w
 | user@wedding.se | User123! | User | – |
 
 Roles and claims are stored in the login cookie. After changing a user's roles or claims, that user has to log out and log in again before the change takes effect.
+
+## Notes on the Identity scaffolding
+
+Problems that came up while scaffolding the Identity pages, and how they were solved:
+
+- **"Package restore failed. Rolling back package changes."** The scaffolder installs a newer package than the EF Core and Identity packages in the project. Fixed by updating all EF Core and Identity packages to the same version (9.0.21) and installing `Microsoft.VisualStudio.Web.CodeGeneration.Design` manually before scaffolding again.
+- **"'ApplicationUser' is an ambiguous reference."** The scaffolder created a second `ApplicationUser` class in `Data`. Fixed by deleting it and keeping `Models/ApplicationUser.cs`.
+- **"The layout view '/Pages/Shared/_Layout.cshtml' could not be located."** The scaffolder points the Identity pages to a Razor Pages layout. Fixed by setting `Layout = "/Views/Shared/_Layout.cshtml";` in `Areas/Identity/Pages/_ViewStart.cshtml`.
 
 ## Author
 
