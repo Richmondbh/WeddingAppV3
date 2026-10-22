@@ -3,6 +3,12 @@
     ViewData["Title"] = "Home";
 }
 
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="alert alert-success text-center">
+        Welcome @User.Identity.Name!
+    </div>
+}
 <div class="text-center">
     <h1 class="event-title">We Are Getting Married!</h1>
     <p>We are delighted to invite you to celebrate this special occasion with us:)</p>
